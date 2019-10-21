@@ -1,14 +1,14 @@
 const express = require("express");
+const config = require("config");
 const router = express.Router();
-const profile = require("../../models/Profile");
-const user = require("../../models/User");
-const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
+const { check, validationResult } = require("express-validator");
+const Profile = require("../../models/Profile");
+const User = require("../../models/User");
 
-//route-  GET api/profile
-//desc-   Get current users profile
-//access- Private
-
+// @route    GET api/profile/me
+// @desc     Get current users profile
+// @access   Private
 router.get("/me", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
@@ -27,10 +27,9 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-//route-  POST api/profile
-//desc-   Create or update a user profile
-//access- Private
-
+// @route    POST api/profile
+// @desc     Create or update user profile
+// @access   Private
 router.post(
   "/",
   [
@@ -39,7 +38,7 @@ router.post(
       check("status", "Status is required")
         .not()
         .isEmpty(),
-      check("skills", "Skills are required")
+      check("skills", "Skills is required")
         .not()
         .isEmpty()
     ]
@@ -65,7 +64,7 @@ router.post(
       linkedin
     } = req.body;
 
-    // Build Profile Object
+    // Build profile object
     const profileFields = {};
     profileFields.user = req.user.id;
 
@@ -79,14 +78,14 @@ router.post(
       profileFields.skills = skills.split(",").map(skill => skill.trim());
     }
 
-    // Build Social Object
+    // Build social object
     profileFields.social = {};
 
-    if (youtube) profileFields.youtube = youtube;
-    if (twitter) profileFields.twitter = twitter;
-    if (facebook) profileFields.facebook = facebook;
-    if (linkedin) profileFields.linkedin = linkedin;
-    if (instagram) profileFields.instagram = instagram;
+    if (youtube) profileFields.social.youtube = youtube;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+    if (instagram) profileFields.social.instagram = instagram;
 
     try {
       // Using upsert option (creates new doc if no match is found):
