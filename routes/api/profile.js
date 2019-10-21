@@ -83,27 +83,18 @@ router.post(
     profileFields.social = {};
 
     if (youtube) profileFields.youtube = youtube;
-    if (facebook) profileFields.facebook = facebook;
     if (twitter) profileFields.twitter = twitter;
+    if (facebook) profileFields.facebook = facebook;
     if (linkedin) profileFields.linkedin = linkedin;
     if (instagram) profileFields.instagram = instagram;
 
     try {
-      let profile = await Profile.findOne({ user: req.user.id });
-
-      if (profile) {
-        //Update
-        profile = await Profile.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: profileFields },
-          { new: true }
-        );
-        return res.json(profile);
-      }
-
-      //Create
-      profile = new Profile(profileFields);
-      await Profile.save();
+      // Using upsert option (creates new doc if no match is found):
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: profileFields },
+        { new: true, upsert: true }
+      );
       res.json(profile);
     } catch (err) {
       console.error(err.message);
