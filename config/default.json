@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://isheeta123:isheeta123@developers-connect-sm4wv.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://isheeta123:isheeta123@developers-connect-sm4wv.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtToken": "thesecrettoken"
 }
