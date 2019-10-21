@@ -7,7 +7,7 @@ const Profile = require("../../models/Profile");
 const User = require("../../models/User");
 
 // @route    GET api/profile/me
-// @desc     Get current users profile
+// @desc     Get Current Users Profile
 // @access   Private
 router.get("/me", auth, async (req, res) => {
   try {
@@ -28,7 +28,7 @@ router.get("/me", auth, async (req, res) => {
 });
 
 // @route    POST api/profile
-// @desc     Create or update user profile
+// @desc     Create or Update User Profile
 // @access   Private
 router.post(
   "/",
@@ -64,7 +64,7 @@ router.post(
       linkedin
     } = req.body;
 
-    // Build profile object
+    // Build Profile Object
     const profileFields = {};
     profileFields.user = req.user.id;
 
@@ -78,7 +78,7 @@ router.post(
       profileFields.skills = skills.split(",").map(skill => skill.trim());
     }
 
-    // Build social object
+    // Build Social Object
     profileFields.social = {};
 
     if (youtube) profileFields.social.youtube = youtube;
